@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exoplanet Data Input Panel</title>
+  <style>
+    body {
+      background-image: url('{{ url_for("static", filename="space.jpg") }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 80px;
+      margin: 0;
+    }
+    input {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+    .panel {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 40px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+    .form-box {
+      display: inline-block;
+      text-align: left;
+      background-color: rgba(20, 20, 40, 0.8);
+      padding: 30px;
+      border-radius: 15px;
+      width: 350px;
+      margin: 0 auto;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    #btn-calc {
+      background-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel">
+    <h1>🪐 Exoplanet Data Input Panel</h1>
+    <p>Enter the NASA TOI parameters below to analyze potential exoplanets.</p>
+
+    <form id="exoplanet-form" class="form-box" action="/predict_from_form" method="POST">
+
+      <label title="Orbital period (days)">Orbital Period (pl_orbper):</label>
+      <input id="pl_orbper" name="pl_orbper" type="number" step="0.01" placeholder="e.g. 5.24">
+
+      <label title="Transit duration (hours)">Transit Duration (pl_trandurh):</label>
+      <input id="pl_trandurh" name="pl_trandurh" type="number" step="0.01" placeholder="e.g. 3.1">
+
+      <label title="Transit depth (ppm)">Transit Depth (pl_trandep):</label>
+      <input id="pl_trandep" name="pl_trandep" type="number" step="0.01" placeholder="e.g. 1500">
+
+      <label title="Planetary radius (Earth radii)">Planet Radius (pl_rade):</label>
+      <input id="pl_rade" name="pl_rade" type="number" step="0.01" placeholder="e.g. 2.1">
+
+      <label title="Incident flux (Earth flux units)">Insolation (pl_insol):</label>
+      <input id="pl_insol" name="pl_insol" type="number" step="0.01" placeholder="e.g. 100.2">
+
+      <label title="Equilibrium temperature (K)">Equilibrium Temperature (pl_eqt):</label>
+      <input id="pl_eqt" name="pl_eqt" type="number" step="0.01" placeholder="e.g. 890">
+
+      <label title="TESS magnitude of the host star">Stellar Tmag (st_tmag):</label>
+      <input id="st_tmag" name="st_tmag" type="number" step="0.01" placeholder="e.g. 11.3">
+
+      <label title="Distance to star (parsecs)">Stellar Distance (st_dist):</label>
+      <input id="st_dist" name="st_dist" type="number" step="0.01" placeholder="e.g. 143.2">
+
+      <label title="Effective temperature (Kelvin)">Stellar Teff (st_teff):</label>
+      <input id="st_teff" name="st_teff" type="number" step="0.01" placeholder="e.g. 5777">
+
+      <label title="Surface gravity (log10(cm/s²))">Stellar Logg (st_logg):</label>
+      <input id="st_logg" name="st_logg" type="number" step="0.01" placeholder="e.g. 4.42">
+
+      <label title="Stellar radius (solar radii)">Stellar Radius (st_rad):</label>
+      <input id="st_rad" name="st_rad" type="number" step="0.01" placeholder="e.g. 1.02">
+
+      <label title="Proper motion in right ascension (mas/yr)">Stellar PMRA (st_pmra):</label>
+      <input id="st_pmra" name="st_pmra" type="number" step="0.01" placeholder="e.g. 15.2">
+
+      <label title="Proper motion in declination (mas/yr)">Stellar PMDec (st_pmdec):</label>
+      <input id="st_pmdec" name="st_pmdec" type="number" step="0.01" placeholder="e.g. -12.4">
+
+      <button id="btn-calc" type="submit">🧮 Calculate</button>

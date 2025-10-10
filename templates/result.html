@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exoplanet AI Detection Result</title>
+  <style>
+    body {
+      background-image: url('{{ url_for("static", filename="sky.jpg") }}');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding-top: 80px;
+      margin: 0;
+      animation: fadeInSmooth 1.2s ease-out;
+    }
+
+    @keyframes fadeInSmooth {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-box {
+      background-color: rgba(0, 0, 0, 0.75);
+      display: inline-block;
+      padding: 45px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+      max-width: 650px;
+      animation: fadeInBox 1.3s ease-out;
+    }
+
+    @keyframes fadeInBox {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    h1 {
+      color: #60a5fa;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(96,165,250,0.6);
+    }
+
+    .nasa-logo {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      width: 90px;
+      opacity: 0.9;
+      transition: transform 0.4s ease;
+    }
+
+    .nasa-logo:hover {
+      transform: rotate(8deg) scale(1.1);
+    }
+
+    .ai-result {
+      font-size: 2em;
+      font-weight: bold;
+      margin: 20px 0;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
+      text-align: left;
+    }
+
+    .info-item {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 10px;
+      border-left: 4px solid #60a5fa;
+    }
+
+    .info-label {
+      color: #9ca3af;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    .temp-bar {
+      margin-top: 30px;
+      width: 100%;
+      height: 22px;
+      background: linear-gradient(90deg, #3b82f6, #22c55e, #facc15, #f97316, #ef4444);
+      border-radius: 11px;
+      position: relative;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    .temp-indicator {
+      position: absolute;
+      top: -7px;
+      width: 14px;
+      height: 36px;
+      background-color: white;
+      border-radius: 7px;
+      border: 2px solid #333;
+      transition: left 1.2s ease-out;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+
+    .source-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+      margin: 10px 5px;
+    }
+
+    .badge-db {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+
+    .badge-ai {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    }
+
+    .probabilities {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+      gap: 10px;
+    }
+
+    .prob-item {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 12px;
+      border-top: 3px solid;
+    }
+
+    .prob-cp { border-color: #22c55e; }
+    .prob-pc { border-color: #facc15; }
+    .prob-fp { border-color: #ef4444; }
+
+    .back-btn {
+      margin-top: 35px;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1em;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+
+    .back-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    }
+
+    .legend {
+      margin-top: 25px;
+      font-size: 0.85em;
+      color: #9ca3af;
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='R.png') }}" class="nasa-logo" alt="NASA Logo">
+
+  <div class="result-box">
+    <h1>🪐 Exoplanet AI Detection Result</h1>
+
+    {% if result.error %}
+      <div class="ai-result" style="color: #ef4444;">
+        ❌ Error
+      </div>
+      <p>{{ result.error }}</p>
+    {% else %}
+      <!-- Classification Result -->
+      <div class="ai-result" style="color: 
+        {% if result.classification == 'CP' %}#22c55e
+        {% elif result.classification == 'FP' %}#ef4444
+        {% else %}#facc15{% endif %};">
+        {% if result.classification == 'CP' %}✅ Confirmed Planet
+        {% elif result.classification == 'FP' %}❌ False Positive
+        {% else %}🪐 Planet Candidate{% endif %}
+      </div>
+
+      <!-- Source Badge -->
+      <div>
+        <span class="source-badge {% if result.source == 'database' %}badge-db{% else %}badge-ai{% endif %}">
+          {% if result.source == 'database' %}🗄️ Database Match{% else %}🤖 AI Prediction{% endif %}
+        </span>
+      </div>
+
+      <!-- Key Information Grid -->
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Confidence</div>
+          <div class="info-value">{{ result.confidence }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Source</div>
+          <div class="info-value">{{ result.source|upper }}</div>
+        </div>
+        {% if result.pl_eqt %}
+        <div class="info-item">
+          <div class="info-label">Temperature</div>
+          <div class="info-value">{{ "%.0f"|format(result.pl_eqt) }} K</div>
+        </div>
+        {% endif %}
+        {% if result.pl_rade %}
+        <div class="info-item">
+          <div class="info-label">Planet Radius</div>
+          <div class="info-value">{{ "%.2f"|format(result.pl_rade) }} R⊕</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Probability Distribution (AI only) -->
+      {% if result.probabilities %}
+      <div class="probabilities">
+        <div class="prob-item prob-cp">
+          <div style="font-size: 0.9em; color: #9ca3af;">CP</div>
+          <div style="font-size: 1.3em; font-weight: bold;">{{ result.probabilities.CP }}</div>
+        </div>
+        <div class="prob-item prob-fp">
+          <div style="font-size: 0.9em; color: #9ca3af;">FP</div>
+          <div style="font-size: 1.3em; font-weight: bold;">{{ result.probabilities.FP }}</div>
+        </div>
+        <div class="prob-item prob-pc">
+          <div style="font-size: 0.9em; color: #9ca3af;">PC</div>
+          <div style="font-size: 1.3em; font-weight: bold;">{{ result.probabilities.PC }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Temperature Bar -->
+      {% if result.pl_eqt %}
+      <div class="temp-bar">
+        <div class="temp-indicator" id="tempIndicator"></div>
+      </div>
+
+      <div class="legend">
+        <span style="color:#3b82f6;">🔵 Too Cold (&lt;250K)</span> |
+        <span style="color:#22c55e;">🟢 Habitable (250-320K)</span> |
+        <span style="color:#facc15;">🟡 Warm (320-400K)</span> |
+        <span style="color:#ef4444;">🔴 Too Hot (&gt;400K)</span>
+      </div>
+      {% endif %}
+
+      <!-- Description -->
+      <p style="margin-top: 25px; color: #d1d5db; font-size: 0.95em;">
+        {% if result.classification == 'CP' %}
+          This planet is confirmed in NASA databases. Its parameters match known exoplanet records.
+        {% elif result.classification == 'FP' %}
+          The input parameters suggest this object is unlikely to be a true exoplanet.
+        {% else %}
+          The AI model suggests this may be a valid exoplanet candidate, pending further confirmation.
+        {% endif %}
+
+        {% if result.pl_eqt %}
+          {% if result.pl_eqt >= 250 and result.pl_eqt <= 320 %}
+            🌍 Temperature suggests a potentially habitable world.
+          {% elif result.pl_eqt > 320 and result.pl_eqt <= 400 %}
+            ☀️ Warm conditions — possibly a gaseous or partially habitable planet.
+          {% elif result.pl_eqt < 250 %}
+            ❄️ Very cold — probably frozen or distant from its star.
+          {% else %}
+            🔥 Extremely hot — unlikely to sustain life as we know it.
+          {% endif %}
+        {% endif %}
+      </p>
+    {% endif %}
+
+    <button class="back-btn" onclick="window.location.href='{{ url_for('data_page') }}'">
+      ← Back to Input
+    </button>
+  </div>
+
+  {% if result.pl_eqt %}
+  <script>
+    // Temperature indicator position
+    const temp = {{ result.pl_eqt }};
+    let position = 50;
+    
+    if (temp < 250) position = 15;
+    else if (temp >= 250 && temp <= 320) position = 35;
+    else if (temp > 320 && temp <= 400) position = 65;
+    else position = 85;
+    
+    document.getElementById('tempIndicator').style.left = position + '%';
+  </script>
+  {% endif %}
+</body>
+</html>

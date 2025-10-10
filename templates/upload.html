@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Exoplanet CSV File</title>
+  <style>
+    /* --- Sayfa genel stili --- */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url("/static/sky.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* --- Ana kutu (container) --- */
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 25px;
+      padding: 45px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 15px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    p {
+      color: #c0c0c0;
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+
+    /* --- Dosya seç alanı --- */
+    input[type="file"] {
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    input[type="file"]:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.03);
+    }
+
+    /* --- Upload butonu --- */
+    button {
+      margin-top: 25px;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #3f87a6, #ebf8e1, #f69d3c);
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      font-size: 16px;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+    }
+
+    /* --- NASA logosu --- */
+    #nasa-logo {
+      position: absolute;
+      top: 25px;
+      right: 30px;
+      width: 65px;
+      opacity: 0.9;
+      transition: transform 0.4s ease;
+    }
+
+    #nasa-logo:hover {
+      transform: rotate(10deg) scale(1.1);
+    }
+
+    /* --- Giriş animasyonu --- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- NASA logosu -->
+  <img id="nasa-logo" src="/static/R.png" alt="NASA Logo">
+
+  <!-- Ana içerik -->
+  <div class="container">
+    <h1>🪐 Upload Exoplanet CSV File</h1>
+    <p>Upload a CSV file to compare with NASA’s database and detect potential confirmed planets.</p>
+
+    <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+      <input type="file" id="file" name="file" accept=".csv"><br>
+      <button type="submit">Upload & Analyze</button>
+    </form>
+  </div>
+
+  <!-- CSV seçilmediyse uyarı -->
+  <script>
+    document.getElementById("uploadForm").onsubmit = function (e) {
+      const fileInput = document.getElementById("file");
+      if (!fileInput.value) {
+        alert("⚠️ Please select a CSV file first!");
+        e.preventDefault();
+      }
+    };
+  </script>
+</body>
+</html>
