@@ -140,7 +140,7 @@ Exoplanet-AI-Detection/
 ├── feature_names.json
 ├── encoding_map.json
 ├── tess_preprocessed_scaled.csv
-├── requirments.txt
+├── requirements.txt
 ├── LICENSE
 ├── .gitignore
 ├── .gitattributes
@@ -194,7 +194,7 @@ Maps numerical model outputs to classification labels.
 
 A preprocessed TESS-related dataset included with the repository.
 
-### `requirments.txt`
+### `requirements.txt`
 
 Contains the Python dependencies required to run the application.
 
@@ -395,13 +395,13 @@ Rows with missing required feature values are skipped during batch processing.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/ezgerdog/Exoplanet-AI-Detection.git
+git clone https://github.com/ezgerdog/exoplanet-ai-detection.git
 ```
 
 ### 2. Enter the Project Directory
 
 ```bash
-cd Exoplanet-AI-Detection
+cd exoplanet-ai-detection
 ```
 
 ### 3. Create a Virtual Environment
@@ -420,21 +420,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 4. Rename the Requirements File
-
-The repository currently contains:
-
-```text
-requirments.txt
-```
-
-Rename it to:
-
-```text
-requirements.txt
-```
-
-### 5. Install Dependencies
+### 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -454,15 +440,13 @@ The application runs on:
 http://localhost:5000
 ```
 
-Because the app is configured with:
+Debug mode is off by default. Optional environment variables:
 
-```python
-app.run(
-    debug=True,
-    host="0.0.0.0",
-    port=5000
-)
-```
+| Variable | Purpose | Default |
+|---|---|---|
+| `FLASK_DEBUG` | Set to `1` to enable debug mode during local development | `0` |
+| `FLASK_HOST` | Interface to bind (use `0.0.0.0` to expose on the network) | `127.0.0.1` |
+| `PORT` | Port number | `5000` |
 
 ## Optional SQL Server Configuration
 
@@ -590,7 +574,6 @@ Because the repository does not currently include a complete training notebook o
 - The exact model architecture is not documented
 - Database credentials are hardcoded as placeholders
 - SQL Server errors are silently ignored
-- The Flask application runs in debug mode
 - No API authentication is implemented
 - CSV upload size is not limited
 - Uploaded CSV files are not deeply validated
@@ -601,12 +584,10 @@ Because the repository does not currently include a complete training notebook o
 - No model versioning system is included
 - No prediction history is stored
 - No monitoring or logging system is included
-- The requirement file name is misspelled
 - The dataset and trained artifact relationship is not fully documented
 
 ## Recommended Improvements
 
-- Rename `requirments.txt` to `requirements.txt`
 - Add a model training notebook
 - Document the neural network architecture
 - Add evaluation metrics
@@ -619,7 +600,6 @@ Because the repository does not currently include a complete training notebook o
 - Add detailed row-level validation errors
 - Store database settings in environment variables
 - Add structured logging
-- Disable debug mode in production
 - Add Docker support
 - Add a production WSGI server
 - Add API rate limiting
